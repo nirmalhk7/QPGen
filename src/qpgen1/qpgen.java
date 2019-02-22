@@ -4,11 +4,11 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-public class editmode {
-	public static void qadd()
+public class qpgen {
+	public void fixQno()
 	{
 		LogManager logmgr = LogManager.getLogManager();
 		Logger log= logmgr.getLogger(Logger.GLOBAL_LOGGER_NAME);
-		log.log(Level.INFO,"Qadd Entered.");
+		log.log(Level.INFO,"QPGen:FixQno");
 	}
 }

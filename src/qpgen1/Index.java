@@ -1,21 +1,27 @@
 package qpgen1;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
-
+import java.sql.*;
 import qpgen1.editmode;
-import qpgen1.qpgmode;
+import qpgen1.qpgen;
 public class Index {
-private static Logger logg;
 	//Linking the Java program with SQL
 	public static void marriage() {
 		LogManager logmgr = LogManager.getLogManager();
 		Logger log= logmgr.getLogger(Logger.GLOBAL_LOGGER_NAME);
-		log.log(Level.INFO,"Marriage Successful!");
+		log.log(Level.INFO,"Attempting Marriage!");
+		 Connection c = null;
+	      
+	      try {
+	         Class.forName("org.sqlite.JDBC");
+	         c = DriverManager.getConnection("jdbc:sqlite:test.db");
+	      } catch ( Exception e ) {
+	         System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+	         System.exit(0);
+	      }
+	      log.log(Level.INFO,"Opened database successfully");
 	}
 //Main thing
 	public static void main(String[] args) {
@@ -31,13 +37,15 @@ private static Logger logg;
 			choice=inp.nextInt();
 			switch(choice)
 			{
-			case 1:choicecheck=0;
-				log.log(Level.INFO,"Edit Mode entered.");
-				break;
-			case 2:choicecheck=0;
-				log.log(Level.INFO,"QPGM");
-				break;
-			default:choicecheck=1;
+				case 1:choicecheck=0;
+					log.log(Level.INFO,"Edit Mode entered.");
+					editmode.qadd();
+					break;
+				case 2:choicecheck=0;
+					log.log(Level.INFO,"QPGM");
+		//			qpgen.fixQno();
+					break;
+				default:choicecheck=1;
 			}
 	}while(choicecheck!=0);
 		marriage();
