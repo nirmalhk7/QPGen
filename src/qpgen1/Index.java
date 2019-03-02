@@ -35,19 +35,22 @@ public class Index {
 			System.out.println("Looking to Add/Edit/Delete Questions from the database? Enter 1.");
 			System.out.println("Looking to Generate a Question Paper? Enter 2.");
 			choice=inp.nextInt();
+			
 			switch(choice)
 			{
 				case 1:choicecheck=0;
 					log.log(Level.INFO,"Edit Mode entered.");
-					editmode.qadd();
+					System.out.println("What question do you want to add/delete/edit?");
+					String qtopic=inp.next();
+				//	editmode.qdelete();
 					break;
 				case 2:choicecheck=0;
 					log.log(Level.INFO,"QPGM");
-		//			qpgen.fixQno();
+					//qpgen.fixQno();
 					break;
 				default:choicecheck=1;
 			}
 	}while(choicecheck!=0);
-		marriage();
+//		marriage();
 	}
 }
