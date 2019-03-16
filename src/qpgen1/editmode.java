@@ -8,6 +8,8 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
+import java.sql.*;
+
 
 public class editmode {
 	public void qadd()
@@ -19,12 +21,13 @@ public class editmode {
 	public void qdelete( String topic[] ) {
 	      Scanner inp=new Scanner(System.in);
 		  Connection c = null;
-	      java.sql.Statement stmt = null;
+	      
+		
 	      LogManager logmgr = LogManager.getLogManager();
 			Logger log= logmgr.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	      try {
 	         log.log(Level.FINER,"Opened database successfully");
-	         stmt = c.createStatement();
+	         Statement stmt = c.createStatement();
 	         //Show list of Questions that come under that category
 	         ResultSet rs = stmt.executeQuery( "SELECT * FROM QNLIST WHERE TOPIC='"+topic+"';");
 	         while ( rs.next() )
