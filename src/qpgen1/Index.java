@@ -40,17 +40,18 @@ public class Index {
 			{
 				case 1:choicecheck=0;
 					log.log(Level.INFO,"Edit Mode entered.");
-					System.out.println("What question do you want to add/delete/edit?");
+					System.out.println("What topic does the question belong which you want to add/delete/edit?");
 					String qtopic=inp.next();
-				//	editmode.qdelete();
+					editmode.qdelete(qtopic);
 					break;
 				case 2:choicecheck=0;
 					log.log(Level.INFO,"QPGM");
 					//qpgen.fixQno();
 					break;
 				default:choicecheck=1;
+				System.out.println("Please enter numbers 1 or 2 only.");
 			}
 	}while(choicecheck!=0);
-//		marriage();
+		marriage();
 	}
 }
