@@ -1,6 +1,6 @@
 package qpgen1;
 
-import java.beans.Statement;
+import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -27,42 +27,85 @@ public class editmode {
 	    }
 	    return c;
     }
-	public static void qadd(String subj,String topic)
+	public static void qadd(String qsubject,String qtopic)
 	{
+		LogManager logmgr = LogManager.getLogManager();
+		Logger l= logmgr.getLogger(Logger.GLOBAL_LOGGER_NAME);
 		Scanner input = new Scanner(System.in);
-    	String sql = "INSERT INTO QuestionBank.db(QDesc , Op1 , Op2, Op3 , Op4 , Correctop , Subj, Topic,Qhardness ) VALUES(?,?,?,?,?,?,?,?,?)"; 
-        try 
+		Connection connector = connect();
+		try
+		{
+			l.log(Level.INFO,"Checking if Table Exists or Not");
+			Statement stmt = (Statement) connector.createStatement();
+	        String tablecreate = "CREATE TABLE IF NOT EXISTS QUESTION " +
+	                       "(qnos INTEGER PRIMARY KEY NOT NULL," +
+	                       " qdesc TEXT NOT NULL,\n " + 
+	                       " op1 TEXT NOT NULL,\n " + 
+	                       " op2 TEXT NOT NULL,\n " +
+	                       " op3 TEXT NOT NULL,\n " +
+	                       " op4 TEXT NOT NULL,\n " +
+	                       " opA TEXT NOT NULL,\n " +
+	                       " qhardness INTEGER NOT NULL, \n" + 
+	                       " qsubject TEXT NOT NULL ,\n " + 
+	                       " qtopic TEXT NOT NULL )";
+	                       
+	        ((java.sql.Statement) stmt).executeUpdate(tablecreate);
+	        l.log(Level.INFO,"Table Checked.");
+			
+	        stmt.close();
+	        connector.close();
+		}
+		catch(Exception e)
         {
-            Connection conn = connect();
+            l.log(Level.INFO,"Was not able to Create the Table!!");
+			System.out.println("Sorry!!- Something went wrong " + e.getMessage());
+            System.exit(0);
+        }
+	    String sql = "INSERT INTO QUESTION(qnos, qdesc , op1, op2, op3,op4,opA, qhardness, qsubject,qtopic) VALUES(?,?,?,?,?,?,?,?,?,?)"; 
+        l.log(Level.INFO,"Getting into Insert Try! ");
+	    try 
+        {
+        	Connection conn = connect();
             PreparedStatement pstmt = conn.prepareStatement(sql); 
-             System.out.println("Enter the Question"); 
+            System.out.println("Enter the Question Number"); 
+            int qn = input.nextInt();
+             pstmt.setInt(1, qn);
+            System.out.println("Enter the Question"); 
              String qdesc = input.nextLine();
-              pstmt.setString(1, qdesc);
-               System.out.println("Enter Option 1 ");
+              pstmt.setString(2, qdesc);
+            
+              System.out.println("Enter Option 1 ");
                String op1 = input.nextLine();
-              pstmt.setString(2, op1);
-               System.out.println("Enter Option 2 ");
+              pstmt.setString(3, op1);
+              
+              System.out.println("Enter Option 2 ");
                String op2 = input.nextLine();
-              pstmt.setString(3, op2);
+              pstmt.setString(4, op2);
+              
               System.out.println("Enter Option 3 ");
               String op3 = input.nextLine();
-              pstmt.setString(4, op3);
-               System.out.println("Enter Option 4 ");
+              pstmt.setString(5, op3);
+              
+              System.out.println("Enter Option 4 ");
                String op4 = input.nextLine();
-              pstmt.setString(5, op4);
-               System.out.println("Enter  the  Correct Option ");
+              pstmt.setString(6, op4);
+              
+              System.out.println("Enter  the  Correct Option ");
                String correctop = input.nextLine();
-              pstmt.setString(6, correctop);
-              pstmt.setString(7, subj);
-              pstmt.setString(8, topic);
-              System.out.println("Enter the  Difficulty Rating - Please give the difficulty rating from 1 - 5, with 1 being easy and 5 being very hard");
-              int qhardness = input.nextInt();
-              pstmt.setInt(9, qhardness);
+               pstmt.setString(7, correctop);
+              
+               System.out.println("Enter the  Difficulty Rating - Please give the difficulty rating from 1 - 5, with 1 being easy and 5 being very hard");
+               int qhardness = input.nextInt();
+               pstmt.setInt(8, qhardness);
+               
+               pstmt.setString(9, qsubject);
+               pstmt.setString(10, qtopic);
+              
               pstmt.executeUpdate();
         }
         catch(Exception e)
         {
-            System.out.println("Sorry!!- Something went wrong " + e.getMessage());
+            System.out.println("Sorry!!- Something went wrong really bad " + e.getMessage());
             System.exit(0);
         }
 	}
@@ -79,7 +122,7 @@ public class editmode {
 	    	  Connection conn = connect();
 	          conn.setAutoCommit(false);
 	    	  log.log(Level.FINER,"Opened database successfully");      
-	    	  Statement stmt = (Statement) conn.createStatement();
+	    	  PreparedStatement stmt = (PreparedStatement) conn.createStatement();
 	         //Show list of Questions that come under that category
 	          ResultSet rs = ((java.sql.Statement) stmt).executeQuery( "SELECT * FROM QNLIST WHERE qtopic="+topic+" AND qsubj="+Subj+";");
 	          while ( rs.next() )
@@ -91,7 +134,7 @@ public class editmode {
 		         String op3=rs.getString("op3");
 		         String op4=rs.getString("op4");
 		         String opA=rs.getString("opA");
-		         String  qhardness = rs.getString("qhardness");
+		         int  qhardness = rs.getInt("qhardness");
 		         String qsubject = rs.getString("qsubject");
 		         String qtopic = rs.getString("qtopic");
 		         
@@ -103,7 +146,7 @@ public class editmode {
 		         System.out.println("OPTION 4= "+op4);
 		         System.out.println("CORRECT OPTION= "+opA);
 		         System.out.println( "QHARDNESS="+ qhardness );
-		         System.out.println( "QSUBJECT = " + qtopic );
+		         System.out.println( "QSUBJECT = " + qsubject );
 		         System.out.println( "QTOPIC = " + qtopic );
 	         }
 	         System.out.println("Enter the Question Number which you wish to delete:");

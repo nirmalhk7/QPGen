@@ -38,7 +38,7 @@ import java.util.Scanner;
             Connection conn = this.connect();
             PreparedStatement pstmt = conn.prepareStatement(sql); 
              System.out.println("Enter the Question"); 
-             String a = input.nextLine();
+             String a= input.nextLine();
               pstmt.setString(1, a);
                System.out.println("Enter Option 1 ");
                String b = input.nextLine();
