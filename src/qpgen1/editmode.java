@@ -12,8 +12,7 @@ import java.util.logging.Logger;
 
 
 public class editmode {
-
-	public Connection connect()
+	public static Connection connect()
     {
 	     Connection c = null;
 	     try {
@@ -25,16 +24,16 @@ public class editmode {
 	     {
 	         System.out.println("Couldn't connect to database :-("+ e.getMessage());
 	        System.exit(0);
-	       }
-	       return c;
+	    }
+	    return c;
     }
-	public void qadd(String subj,String topic)
+	public static void qadd(String subj,String topic)
 	{
 		Scanner input = new Scanner(System.in);
-    	String sql = "INSERT INTO QUESTION(QDesc , Op1 , Op2, Op3 , Op4 , Correctop , Subj, Topic,Qhardness ) VALUES(?,?,?,?,?,?,?,?,?)"; 
+    	String sql = "INSERT INTO QuestionBank.db(QDesc , Op1 , Op2, Op3 , Op4 , Correctop , Subj, Topic,Qhardness ) VALUES(?,?,?,?,?,?,?,?,?)"; 
         try 
         {
-            Connection conn = this.connect();
+            Connection conn = connect();
             PreparedStatement pstmt = conn.prepareStatement(sql); 
              System.out.println("Enter the Question"); 
              String qdesc = input.nextLine();
@@ -61,32 +60,30 @@ public class editmode {
               pstmt.setInt(9, qhardness);
               pstmt.executeUpdate();
         }
-        
         catch(Exception e)
         {
             System.out.println("Sorry!!- Something went wrong " + e.getMessage());
             System.exit(0);
         }
 	}
-	public void qedit(String Subj,String topic)
+	public static void qedit(String Subj,String topic)
 	{
 		
 	}
-	public void qdelete(String Subj, String topic)
+	public static void qdelete(String Subj, String topic)
 	{
 	      Scanner inp=new Scanner(System.in);
 	      LogManager logmgr = LogManager.getLogManager();
-			Logger log= logmgr.getLogger(Logger.GLOBAL_LOGGER_NAME);
+		  Logger log= logmgr.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	      try {
-	    	  Connection conn = this.connect();
+	    	  Connection conn = connect();
 	          conn.setAutoCommit(false);
-	    	  log.log(Level.FINER,"Opened database successfully");
-	         
+	    	  log.log(Level.FINER,"Opened database successfully");      
 	    	  Statement stmt = (Statement) conn.createStatement();
 	         //Show list of Questions that come under that category
-	         ResultSet rs = ((java.sql.Statement) stmt).executeQuery( "SELECT * FROM QNLIST WHERE qtopic='"+topic+"';");
-	         while ( rs.next() )
-	         {
+	          ResultSet rs = ((java.sql.Statement) stmt).executeQuery( "SELECT * FROM QNLIST WHERE qtopic="+topic+" AND qsubj="+Subj+";");
+	          while ( rs.next() )
+	          {
 		         int qnos = rs.getInt("qnos");
 		         String  qdesc = rs.getString("qdesc");
 		         String op1=rs.getString("op1");
@@ -95,6 +92,7 @@ public class editmode {
 		         String op4=rs.getString("op4");
 		         String opA=rs.getString("opA");
 		         String  qhardness = rs.getString("qhardness");
+		         String qsubject = rs.getString("qsubject");
 		         String qtopic = rs.getString("qtopic");
 		         
 		         System.out.println( "QNOS = " + qnos );
@@ -105,11 +103,12 @@ public class editmode {
 		         System.out.println("OPTION 4= "+op4);
 		         System.out.println("CORRECT OPTION= "+opA);
 		         System.out.println( "QHARDNESS="+ qhardness );
+		         System.out.println( "QSUBJECT = " + qtopic );
 		         System.out.println( "QTOPIC = " + qtopic );
 	         }
 	         System.out.println("Enter the Question Number which you wish to delete:");
 	         int qdel=inp.nextInt();
-	         String sql = "DELETE from QNLIST where TOPIC='"+topic+";";
+	         String sql = "DELETE from QNLIST where qnos="+qdel+";";
 	         ((java.sql.Statement) stmt).executeUpdate(sql);
 	         conn.commit(); 
 	         rs.close();

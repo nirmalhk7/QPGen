@@ -1,13 +1,15 @@
-import java.lang.*;
+package qpgen1;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.util.Scanner;
-import java.sql.*;
 
  class Add1
 {
     
      public Connection connect()
      {
-          Connection c = null;
+      Connection c = null;
       
       Scanner input = new Scanner(System.in);
       
@@ -28,8 +30,9 @@ import java.sql.*;
     
     public  void InsertQuestion()
       {
-        String sql = "INSERT INTO QUESTION(QDesc , Op1 , Op2, Op3 , Op4 , Correctans , Subj, Topic,Diff ) VALUES(?,?,?,?,?,?,?,?,?)";
-            Scanner input = new Scanner(System.in);
+    	Scanner input = new Scanner(System.in);
+    	String sql = "INSERT INTO QUESTION(QDesc , Op1 , Op2, Op3 , Op4 , Correctans , Subj, Topic,Diff ) VALUES(?,?,?,?,?,?,?,?,?)";
+            
         try 
         {
             Connection conn = this.connect();
@@ -46,19 +49,19 @@ import java.sql.*;
               System.out.println("Enter Option 3 ");
               String d = input.nextLine();
               pstmt.setString(4, d);
-               System.out.println("Enter Option 4 ");
-               String e = input.nextLine();
-              pstmt.setString(5, e);
-               System.out.println("Enter  the  Correct Option ");
-               String f = input.nextLine();
-              pstmt.setString(6, f);
-              System.out.println("Enter the Subject");
+             System.out.println("Enter Option 4 ");
+             String e = input.nextLine();
+             pstmt.setString(5, e);
+             System.out.println("Enter  the  Correct Option ");
+             String f = input.nextLine();
+             pstmt.setString(6, f);
+             System.out.println("Enter the Subject");
              String h = input.nextLine();
-              pstmt.setString(7, h);
+             pstmt.setString(7, h);
              System.out.println("Enter the specific Topic on which the Question is based ");
              String i = input.nextLine();
-                pstmt.setString(8, i);
-                System.out.println("Enter the  Difficulty Rating - Please give the difficulty rating from 1 - 5, with 1 being easy and 5 being very hard   ");
+             pstmt.setString(8, i);
+             System.out.println("Enter the  Difficulty Rating - Please give the difficulty rating from 1 - 5, with 1 being easy and 5 being very hard   ");
              int g = input.nextInt();
              if(g== 1 || g== 2 || g== 3 || g== 4 || g== 5)
               pstmt.setInt(9, g);
@@ -81,7 +84,6 @@ public class Add {
    public static void main( String args[] ) {   
        int k;
        Scanner input = new Scanner(System.in);
-       System.out.println("Hello !! This is the program to add questions into question bank !!");
        Add1 object1 = new Add1();  
        object1.connect();
        System.out.println("Enter the number of questions you want to enter into question bank");
