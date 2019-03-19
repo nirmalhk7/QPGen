@@ -37,7 +37,7 @@ public class editmode {
 		Connection con = connect();
 		try {
 			printall=con.createStatement();
-			ResultSet r = printall.executeQuery("SELECT * FROM QBANK WHERE qsubject="+qsubject+" AND qtopic="+qtopic+";");
+			ResultSet r = printall.executeQuery("SELECT * FROM QBANK WHERE qsubject= "+qsubject+" AND qtopic= "+qtopic+";");
 			while ( r.next() ) {
 		     	   int no = r.getInt("qnos");
 		     	   String  desc = r.getString("qdesc");
@@ -74,7 +74,7 @@ public class editmode {
 			l.log(Level.INFO,"Checking if Table Exists or Not");
 			Statement stmt = (Statement) connector.createStatement();
 	        String tablecreate = "CREATE TABLE IF NOT EXISTS QBANK " +
-	                       "(qnos INTEGER PRIMARY KEY NOT NULL," +
+	                       "(qnos INTEGER NOT NULL," +
 	                       " qdesc TEXT NOT NULL,\n " + 
 	                       " op1 TEXT NOT NULL,\n " + 
 	                       " op2 TEXT NOT NULL,\n " +
@@ -141,7 +141,7 @@ public class editmode {
                System.out.println("The following questions now exist under subject "+qsubject+" and topic "+qtopic+" -");
                Statement printdel;
                printdel=conn.createStatement();
-               ResultSet rs = printdel.executeQuery("SELECT * FROM QBANK WHERE qsubject="+qsubject+" AND qtopic="+qtopic+";");
+               ResultSet rs = printdel.executeQuery("SELECT * FROM QBANK WHERE qsubject= "+qsubject+" AND qtopic= "+qtopic+" ;");
                while ( rs.next() ) {
             	   int no = rs.getInt("qnos");
             	   String  desc = rs.getString("qdesc");
