@@ -13,31 +13,14 @@ import java.util.logging.Logger;
 
 
 public class editmode {
-	public static Connection connect()
-    {
-	     Connection c = null;
-	     try {
-	        Class.forName("org.sqlite.JDBC");
-	        c = DriverManager.getConnection("jdbc:sqlite:QuestionBank.db"); //Connecting to the Question Bank database, or creating it if not exists 
-	        System.out.println("Opened database successfully");
-	     }   
-	     catch(Exception e)
-	     {
-	         System.out.println("Couldn't connect to database :-("+ e.getMessage());
-	        System.exit(0);
-	    }
-	    return c;
-    }
-	public static void qadd(String qsubject,String qtopic)
+	public static void printtable(String sql,String qsubject,String qtopic)
 	{
-		LogManager logmgr = LogManager.getLogManager();
-		Logger l= logmgr.getLogger(Logger.GLOBAL_LOGGER_NAME);
-		Scanner input = new Scanner(System.in);
-		Statement printall;
-		Connection con = connect();
+		
 		try {
+			Connection con = connect();
+			Statement printall=con.createStatement();
 			printall=con.createStatement();
-			ResultSet r = printall.executeQuery("SELECT * FROM QBANK WHERE qsubject= "+qsubject+" AND qtopic= "+qtopic+";");
+			ResultSet r = printall.executeQuery(sql);
 			while ( r.next() ) {
 		     	   int no = r.getInt("qnos");
 		     	   String  desc = r.getString("qdesc");
@@ -66,15 +49,36 @@ public class editmode {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-        
-        
+	}
+	public static Connection connect()
+    {
+	     Connection c = null;
+	     try {
+	        Class.forName("org.sqlite.JDBC");
+	        c = DriverManager.getConnection("jdbc:sqlite:QuestionBank.db"); //Connecting to the Question Bank database, or creating it if not exists 
+	        System.out.println("Opened database successfully");
+	     }   
+	     catch(Exception e)
+	     {
+	         System.out.println("Couldn't connect to database :-("+ e.getMessage());
+	        System.exit(0);
+	    }
+	    return c;
+    }
+	public static void qadd(String qsubject,String qtopic)
+	{
+		LogManager logmgr = LogManager.getLogManager();
+		Logger l= logmgr.getLogger(Logger.GLOBAL_LOGGER_NAME);
+		Scanner input = new Scanner(System.in);
+		String printall="SELECT * FROM QBANK WHERE qsubject= "+qsubject+" qtopic= "+qtopic+";";
+		printtable(printall,qsubject,qtopic);
 		Connection connector = connect();
 		try
 		{
 			l.log(Level.INFO,"Checking if Table Exists or Not");
 			Statement stmt = (Statement) connector.createStatement();
 	        String tablecreate = "CREATE TABLE IF NOT EXISTS QBANK " +
-	                       "(qnos INTEGER NOT NULL," +
+	                       "(qnos INTEGER PRIMARY KEY NOT NULL," +
 	                       " qdesc TEXT NOT NULL,\n " + 
 	                       " op1 TEXT NOT NULL,\n " + 
 	                       " op2 TEXT NOT NULL,\n " +
@@ -139,33 +143,8 @@ public class editmode {
                pstmt.setString(10, qtopic);
                pstmt.executeUpdate();
                System.out.println("The following questions now exist under subject "+qsubject+" and topic "+qtopic+" -");
-               Statement printdel;
-               printdel=conn.createStatement();
-               ResultSet rs = printdel.executeQuery("SELECT * FROM QBANK WHERE qsubject= "+qsubject+" AND qtopic= "+qtopic+" ;");
-               while ( rs.next() ) {
-            	   int no = rs.getInt("qnos");
-            	   String  desc = rs.getString("qdesc");
-            	   op1 = rs.getString("op1");
-            	   op2 = rs.getString("op2");
-            	   op3 = rs.getString("op3");
-            	   op4 = rs.getString("op4");
-            	   correctop = rs.getString("opA");
-            	   qhardness=rs.getInt("qhardness");
-            	   qsubject=rs.getString("qsubject");
-            	   qtopic=rs.getString("qtopic");
-                   System.out.println( "QNOS = " +no );
-                   System.out.println( "QUESTION = " + qdesc );
-                   System.out.println( "OPTION 1 = " + op1 );
-                   System.out.println( "OPTION 2 = " + op2 );
-                   System.out.println( "OPTION 3 = " + op3 );
-                   System.out.println( "OPTION 4 = " + op4 );
-                   System.out.println( "CORRECT ANSWER = " + correctop);
-                   System.out.println( "HARDNESS = "+ qhardness);
-                   System.out.println( "SUBJECT = "+ qsubject);
-                   System.out.println( "TOPIC = "+ qtopic);
-                   System.out.println();
-              }
-              
+               String afteradd = "SELECT * FROM QBANK WHERE qsubject= "+qsubject+" AND qtopic= "+qtopic+" ;";
+               printtable(afteradd,qsubject,qtopic);
         }
         catch(Exception e)
         {
@@ -177,7 +156,7 @@ public class editmode {
 	{
 		
 	}
-	public static void qdelete(String Subj, String topic)
+	public static void qdelete(String qsubject, String qtopic)
 	{
 	      Scanner inp=new Scanner(System.in);
 	      LogManager logmgr = LogManager.getLogManager();
@@ -185,38 +164,16 @@ public class editmode {
 	      try {
 	    	  Connection conn = connect();
 	          conn.setAutoCommit(false);
-	    	  log.log(Level.FINER,"Opened database successfully");      
-	    	  PreparedStatement stmt = (PreparedStatement) conn.createStatement();
+	    	  log.log(Level.FINER,"Opened database successfully");
 	         //Show list of Questions that come under that category
-	          ResultSet rs = ((java.sql.Statement) stmt).executeQuery( "SELECT * FROM QBANK WHERE qtopic="+topic+" AND qsubj="+Subj+";");
-	          while ( rs.next() )
-	          {
-		         int qnos = rs.getInt("qnos");
-		         String  qdesc = rs.getString("qdesc");
-		         String op1=rs.getString("op1");
-		         String op2=rs.getString("op2");
-		         String op3=rs.getString("op3");
-		         String op4=rs.getString("op4");
-		         String opA=rs.getString("opA");
-		         int  qhardness = rs.getInt("qhardness");
-		         String qsubject = rs.getString("qsubject");
-		         String qtopic = rs.getString("qtopic");
-		         
-		         System.out.println( "QNOS = " + qnos );
-		         System.out.println( "QDESC = " + qdesc );
-		         System.out.println("OPTION 1= "+op1);
-		         System.out.println("OPTION 2= "+op2);
-		         System.out.println("OPTION 3= "+op3);
-		         System.out.println("OPTION 4= "+op4);
-		         System.out.println("CORRECT OPTION= "+opA);
-		         System.out.println( "QHARDNESS="+ qhardness );
-		         System.out.println( "QSUBJECT = " + qsubject );
-		         System.out.println( "QTOPIC = " + qtopic );
-	         }
+	          String printall="SELECT * FROM QBANK WHERE qtopic="+qtopic+" AND qsubj="+qsubject+";";
+	          printtable(printall,qsubject,qtopic);
 	         System.out.println("Enter the Question Number which you wish to delete:");
 	         int qdel=inp.nextInt();
+	         Statement stmt=conn.createStatement();
 	         String sql = "DELETE from QNLIST where qnos="+qdel+";";
 	         ((java.sql.Statement) stmt).executeUpdate(sql);
+	         ResultSet rs=stmt.executeQuery(sql);
 	         conn.commit(); 
 	         rs.close();
 	         ((Connection) stmt).close();
