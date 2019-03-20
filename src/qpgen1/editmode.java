@@ -108,39 +108,39 @@ public class editmode {
 	    	Scanner i= new Scanner(System.in);
 	    	Connection conn = connect();
             PreparedStatement pstmt = conn.prepareStatement(sql); 
-            System.out.println("Enter the Question Number"); 
+           /* System.out.println("Enter the Question Number"); 
             int qn = i.nextInt();
-             pstmt.setInt(1, qn);
+             pstmt.setInt(1, qn);*/
             System.out.println("Enter the Question"); 
              String qdesc = input.nextLine();
-              pstmt.setString(2, qdesc);
+              pstmt.setString(1, qdesc);
             
               System.out.println("Enter Option 1 ");
                String op1 = input.nextLine();
-              pstmt.setString(3, op1);
+              pstmt.setString(2, op1);
               
               System.out.println("Enter Option 2 ");
                String op2 = input.nextLine();
-              pstmt.setString(4, op2);
+              pstmt.setString(3, op2);
               
               System.out.println("Enter Option 3 ");
               String op3 = input.nextLine();
-              pstmt.setString(5, op3);
+              pstmt.setString(4, op3);
               
               System.out.println("Enter Option 4 ");
                String op4 = input.nextLine();
-              pstmt.setString(6, op4);
+              pstmt.setString(5, op4);
               
               System.out.println("Enter  the  Correct Option ");
                String correctop = input.nextLine();
-               pstmt.setString(7, correctop);
+               pstmt.setString(6, correctop);
               
                System.out.println("Enter the  Difficulty Rating - Please give the difficulty rating from 1 - 5, with 1 being easy and 5 being very hard");
                int qhardness = input.nextInt();
-               pstmt.setInt(8, qhardness);
+               pstmt.setInt(7, qhardness);
                
-               pstmt.setString(9, qsubject);
-               pstmt.setString(10, qtopic);
+               pstmt.setString(8, qsubject);
+               pstmt.setString(9, qtopic);
                pstmt.executeUpdate();
                System.out.println("The following questions now exist under subject "+qsubject+" and topic "+qtopic+" -");
                String afteradd = "SELECT * FROM QBANK WHERE qsubject= "+qsubject+" AND qtopic= "+qtopic+" ;";
