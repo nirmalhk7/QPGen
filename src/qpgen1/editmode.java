@@ -101,7 +101,7 @@ public class editmode {
 			System.out.println("Sorry!!- Something went wrong " + e.getMessage());
             System.exit(0);
         }
-	    String sql = "INSERT INTO QBANK(qnos, qdesc , op1, op2, op3,op4,opA, qhardness, qsubject,qtopic) VALUES(?,?,?,?,?,?,?,?,?,?)"; 
+	    String sql = "INSERT INTO QBANK(qdesc , op1, op2, op3,op4,opA, qhardness, qsubject,qtopic) VALUES(?,?,?,?,?,?,?,?,?)"; 
         l.log(Level.INFO,"Getting into Insert Try! ");
 	    try 
         {
