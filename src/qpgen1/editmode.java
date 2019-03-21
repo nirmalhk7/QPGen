@@ -157,14 +157,10 @@ public class editmode {
 		LogManager logmgr = LogManager.getLogManager();
 		Logger log= logmgr.getLogger(Logger.GLOBAL_LOGGER_NAME);
 		log.log(Level.INFO,"Qadd Entered.");
-	}
-	public static void qedit( String Subj,String topic ) {
 	      Scanner inp=new Scanner(System.in);
 		  Connection c = null;
 	      
-		
-	      LogManager logmgr = LogManager.getLogManager();
-			Logger log= logmgr.getLogger(Logger.GLOBAL_LOGGER_NAME);
+
 	      try {
 	         log.log(Level.FINER,"Opened database successfully");
 	         Statement stmt = c.createStatement();
@@ -219,7 +215,7 @@ public class editmode {
 	      System.out.println("Operation done successfully");
 	   }
 		
-	}
+	
 	public static void qdelete(String qsubject, String qtopic)
 	{
 	      Scanner inp=new Scanner(System.in);
