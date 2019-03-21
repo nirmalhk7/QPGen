@@ -1,3 +1,5 @@
+package qpgen1;
+
 
 import java.util.Scanner;
 import java.sql.*;

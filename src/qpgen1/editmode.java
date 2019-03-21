@@ -44,6 +44,9 @@ public class editmode {
 		            System.out.println( "TOPIC = "+ qtopic);
 		            System.out.println();
 		       }
+			con.close();
+			printall.close();
+			r.close();
 			
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
@@ -161,22 +164,21 @@ public class editmode {
 	      Scanner inp=new Scanner(System.in);
 	      LogManager logmgr = LogManager.getLogManager();
 		  Logger log= logmgr.getLogger(Logger.GLOBAL_LOGGER_NAME);
+		  log.log(Level.INFO,"Entered QDELETE");
 	      try {
 	    	  Connection conn = connect();
 	          conn.setAutoCommit(false);
-	    	  log.log(Level.FINER,"Opened database successfully");
+	    	  log.log(Level.INFO,"Opened database successfully for QDELETE");
 	         //Show list of Questions that come under that category
-	          String printall="SELECT * FROM QBANK WHERE qtopic="+qtopic+" AND qsubj="+qsubject+";";
+	          String printall="SELECT * FROM QBANK WHERE qtopic= "+qtopic+" AND qsubject= "+qsubject+";";
 	          printtable(printall,qsubject,qtopic);
 	         System.out.println("Enter the Question Number which you wish to delete:");
 	         int qdel=inp.nextInt();
 	         Statement stmt=conn.createStatement();
-	         String sql = "DELETE from QNLIST where qnos="+qdel+";";
-	         ((java.sql.Statement) stmt).executeUpdate(sql);
-	         ResultSet rs=stmt.executeQuery(sql);
+	         String sql = "DELETE from QBANK where qnos="+qdel+";";
+	          stmt.executeUpdate(sql);
 	         conn.commit(); 
-	         rs.close();
-	         ((Connection) stmt).close();
+	        ((Connection) stmt).close();
 	         conn.close();
 	      } catch ( Exception e ) {
 	         System.err.println( e.getClass().getName() + ": " + e.getMessage() );
