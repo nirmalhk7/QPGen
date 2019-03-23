@@ -44,9 +44,6 @@ public class editmode {
 		            System.out.println( "TOPIC = "+ qtopic);
 		            System.out.println();
 		       }
-			con.close();
-			printall.close();
-			r.close();
 			
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
@@ -146,7 +143,7 @@ public class editmode {
                pstmt.setString(9, qtopic);
                pstmt.executeUpdate();
                System.out.println("The following questions now exist under subject "+qsubject+" and topic "+qtopic+" -");
-               String afteradd = "SELECT * FROM QBANK WHERE qsubject= "+qsubject+" AND qtopic= "+qtopic+" ;";
+               String afteradd = "SELECT * FROM QBANK WHERE qsubject= '"+qsubject+"' AND qtopic= '"+qtopic+"' ;";
                printtable(afteradd,qsubject,qtopic);
         }
         catch(Exception e)
@@ -170,15 +167,16 @@ public class editmode {
 	          conn.setAutoCommit(false);
 	    	  log.log(Level.INFO,"Opened database successfully for QDELETE");
 	         //Show list of Questions that come under that category
-	          String printall="SELECT * FROM QBANK WHERE qtopic= "+qtopic+" AND qsubject= "+qsubject+";";
+	          String printall="SELECT * FROM QBANK WHERE qtopic= '"+qtopic+"' AND qsubject= '"+qsubject+"';";
 	          printtable(printall,qsubject,qtopic);
 	         System.out.println("Enter the Question Number which you wish to delete:");
 	         int qdel=inp.nextInt();
+	         System.out.println("You wish to delete Question "+qdel);
 	         Statement stmt=conn.createStatement();
-	         String sql = "DELETE from QBANK where qnos="+qdel+";";
+	         String sql = "DELETE from QBANK where qnos='"+qdel+"';";
 	          stmt.executeUpdate(sql);
 	         conn.commit(); 
-	        ((Connection) stmt).close();
+	        ((Statement) stmt).close();
 	         conn.close();
 	      } catch ( Exception e ) {
 	         System.err.println( e.getClass().getName() + ": " + e.getMessage() );
