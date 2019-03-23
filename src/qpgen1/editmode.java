@@ -154,68 +154,8 @@ public class editmode {
 	}
 	public static void qedit(String Subj,String topic)
 	{
-		LogManager logmgr = LogManager.getLogManager();
-		Logger log= logmgr.getLogger(Logger.GLOBAL_LOGGER_NAME);
-		log.log(Level.INFO,"Qadd Entered.");
-	      Scanner inp=new Scanner(System.in);
-		  Connection c = null;
-	      
-
-	      try {
-	         log.log(Level.FINER,"Opened database successfully");
-	         Statement stmt = c.createStatement();
-	         //Show list of Questions that come under that category
-	         ResultSet rs = stmt.executeQuery( "SELECT * FROM QNLIST WHERE qtopic="+topic+" AND qsubj="+Subj+";");
-	         while ( rs.next() )
-	         {
-		         int qnos = rs.getInt("qnos");
-		         String  qdesc = rs.getString("qdesc");
-		         String  qhardness = rs.getString("qhardness");
-		         String qtopic = rs.getString("qtopic");
-		         
-		         System.out.println( "QNOS = " + qnos );
-		         System.out.println( "QDESC = " + qdesc );
-		         System.out.println( "QHARDNESS="+ qhardness );
-		         System.out.println( "QTOPIC = " + qtopic );
-                         System.out.println("QSUBJECT ="+ Subj);
-	         }
-	          int qnos;
-	         System.out.println("Enter the Question Number which you wish to edit:");
-	         qnos=inp.nextInt();
-               
-                System.out.println("Enter the question ");
-            String a = input.nextLine();
-            System.out.println("Enter Option 1 ");
-            String b = input.nextLine();
-            System.out.println("Enter Option 2 ");
-              String z = input.nextLine();
-               System.out.println("Enter Option 3 ");
-              String d = input.nextLine();
-               System.out.println("Enter Option 4 ");
-              String e = input.nextLine();
-               System.out.println("Enter  the  Correct Option ");
-              String f = input.nextLine();
-               System.out.println("Enter the  Difficulty Rating ");
-             String g = input.nextLine();
-             
-          
-          /*this stmt is giving error can u plz chk it out*/
-          String sql="UPDATE QNLIST SET QDESC="+a+",OP1="+b+",OP2="+z+",OP3="d",OP4="+e+",CORRECTOP ="+f+",QHARDNESS ="+g+" WHERE qtopic="+topic+",qsubj="+Subj+";";
-	         ((java.sql.Statement) stmt).executeUpdate(sql);
-	          rs=stmt.executeQuery(sql);
-	         
-	         c.commit(); 
-	      rs.close();
-	      stmt.close();
-	      c.close();
-	      } catch ( Exception e ) {
-	         System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-	         System.exit(0);
-	      }
-	      System.out.println("Operation done successfully");
-	   }
 		
-	
+	}
 	public static void qdelete(String qsubject, String qtopic)
 	{
 	      Scanner inp=new Scanner(System.in);
