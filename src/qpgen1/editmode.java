@@ -1,5 +1,5 @@
-
 package qpgen1;
+
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -155,53 +155,88 @@ public class editmode {
 	public static void qedit(String Subj,String topic)
 	{
 		LogManager logmgr = LogManager.getLogManager();
-		Logger log= logmgr.getLogger(Logger.GLOBAL_LOGGER_NAME);
-		log.log(Level.INFO,"Qadd Entered.");
-	      Scanner input=new Scanner(System.in);
-		  Connection c = connect();
-	      
-
-	      try {
-	         log.log(Level.FINER,"Opened database successfully");
-	         Statement stmt = c.createStatement();
+		Logger l= logmgr.getLogger(Logger.GLOBAL_LOGGER_NAME);
+		l.log(Level.INFO,"QEdit Entered.");
+	
+	
+	     try {
+                Scanner inp=new Scanner(System.in);
+	    	  Connection conn = connect();
+	          conn.setAutoCommit(false);
+	           l.log(Level.INFO,"QEdit Try Entered.");
 	         //Show list of Questions that come under that category
-	        ResultSet rs;
-	       log.log(Level.INFO,"Finding Query");
-	        printtable( "SELECT * FROM QBANK WHERE qtopic= '"+topic+"' AND qsubject= '"+Subj+"';",Subj,topic);
-	         System.out.println("Enter the Question Number which you wish to edit:");
-	         int qnos=input.nextInt();
-               input.nextLine();
-                System.out.println("Enter the question ");
-            String desc = input.nextLine();
-            System.out.println("Enter Option 1 ");
-            String op1 = input.nextLine();
-            System.out.println("Enter Option 2 ");
-              String op2 = input.nextLine();
-               System.out.println("Enter Option 3 ");
-              String op3 = input.nextLine();
-               System.out.println("Enter Option 4 ");
-              String op4 = input.nextLine();
-               System.out.println("Enter  the  Correct Option ");
-              String opA = input.nextLine();
-               System.out.println("Enter the  Difficulty Rating ");
-             int qhardness = input.nextInt();
-             
-          
-          String sql="UPDATE QBANK SET qdesc= '"+desc+"',op1= '"+op1+"',op2= '"+op2+"',op3= '"+op3+"'op4= '"+op4+"',opA = '"+opA+"',qhardness= '"+qhardness+"' WHERE qtopic= '"+topic+"' AND qsubj= '"+Subj+"';";
-	         ((java.sql.Statement) stmt).executeUpdate(sql);
-	          rs=stmt.executeQuery(sql);
-	         
-	         c.commit(); 
-	      rs.close();
-	      stmt.close();
-	      c.close();
-	      } catch ( Exception e ) {
-	         System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-	         System.exit(0);
-	      }
-	      System.out.println("Operation done successfully");
+	          String printall="SELECT * FROM QBANK WHERE qtopic= '"+topic+"' AND qsubject= '"+Subj+"';";
+	          printtable(printall,Subj,topic);
+                  Statement print=conn.createStatement();
+                   String sql="SELECT QNOS FROM QBANK WHERE qtopic= '"+topic+"' AND qsubject= '"+Subj+"';";
+                   int arr[]=new int[100];
+                    ResultSet d=print.executeQuery(sql);
+                    int j=0;
+                    while(d.next())
+                    {
+                        arr[j]=d.getInt("qnos");
+                        j++;
+                    }
+                            
+		  System.out.println("Enter the Question Number which you wish to edit:");
+	         int qnos=inp.nextInt();
+                 inp.nextLine();
+                 int flag=0;
+                 for(int i=0;i<j;i++)
+                 {
+                     if(arr[i]==qnos)
+                            flag=1;
+                 }
+                 
+	      if(flag==1)
+		System.out.println("You wish to update Question "+qnos);
+               else
+                   System.out.println("Wrong question number");
+        
+            if(flag==1)
+            { 
+             String query = "UPDATE QBANK SET QDESC=?,OP1=?,OP2=?,OP3=?,OP4=?,OPA =?,QHARDNESS =? WHERE QNOS=?";          
+             PreparedStatement pstmt = conn.prepareStatement(query);
+             System.out.println("Enter the Question"); 
+             String qdesc = inp.nextLine();
+             pstmt.setString (1,qdesc);
+            
+              System.out.println("Enter Option 1 ");
+               String op1 = inp.nextLine();
+               pstmt.setString (2,op1);
+              
+              
+              System.out.println("Enter Option 2 ");
+               String op2 = inp.nextLine();
+               pstmt.setString(3, op2);
+              
+              System.out.println("Enter Option 3 ");
+              String op3 = inp.nextLine();
+             pstmt.setString(4, op3);
+              
+              System.out.println("Enter Option 4 ");
+               String op4 = inp.nextLine();
+              pstmt.setString(5, op4);
+              
+              System.out.println("Enter  the  Correct Option ");
+               String correctop = inp.nextLine();
+              pstmt.setString(6, correctop);
+              
+               System.out.println("Enter the  Difficulty Rating - Please give the difficulty rating from 1 - 5, with 1 being easy and 5 being very hard");
+               int qhardness = inp.nextInt();
+                pstmt.setInt(7, qhardness);
+                pstmt.setInt(8,qnos);
+              pstmt.executeUpdate();
+                  conn.close();
+            }   
+	     
+                }
+              catch (Exception e)
+            {
+                System.err.println("Got an exception! ");
+                 System.err.println(e.getMessage());
 	   }
-		
+        }	
 	
 	public static void qdelete(String qsubject, String qtopic)
 	{
@@ -232,3 +267,4 @@ public class editmode {
 	      System.out.println("Operation done successfully");
 	}
 }
+
