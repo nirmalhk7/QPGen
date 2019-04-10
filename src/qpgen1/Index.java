@@ -54,12 +54,11 @@ public class Index {
 					break;
 				case 2:choicecheck=0;
 					log.log(Level.INFO,"QPGM");
-					System.out.println("QUESTION PAPER");
+					System.out.println("Following Questions are being printed in QuestionBank.db:-");
 					String s1=qpgen.Question_paper();
-                                          System.out.println(s1);
-					System.out.println("ANSWER PAPER");				
-                                        String s2=qpgen.Answer_paper();
-                                            System.out.println(s2);
+                    System.out.println("ANSWER PAPER");				
+                    String s2=qpgen.Answer_paper();
+                    System.out.println(s2);
 	                                 break;
 				default:choicecheck=1;
 				System.out.println("Please enter numbers 1 or 2 only.");

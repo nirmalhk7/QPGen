@@ -12,12 +12,74 @@ import java.sql.SQLException;
 import java.io.*; 
 import java.util.*; 
 
-import qpgen1.Add1;
 public class qpgen {
-        public static int n; 
-        public static int ans[]=new int[100];
-        public static int qno[]=new int[100];
-	public static void fixQno()
+	 static int n;
+	
+    public static int qno[]= new int[100];
+	static int timecalled;
+	qpgen(){
+		timecalled=0;
+	}
+	public static void firsttimerun() {
+		LogManager logmgr = LogManager.getLogManager();
+		Logger log= logmgr.getLogger(Logger.GLOBAL_LOGGER_NAME);
+		Scanner inp=new Scanner(System.in);
+		System.out.println("University Name?:");
+		String data=inp.nextLine();
+		System.out.println("Subject Name?:");
+		String sbj=inp.nextLine();
+		System.out.println("Date of Examination:");
+		String date=inp.nextLine();
+		File file = new File("TestPaper.txt");
+		 FileWriter fr = null;
+	        try {
+	            fr = new FileWriter(file);
+	            fr.write(data+"\n"+sbj+"\n"+date+"\n\nNAME:-\nROLL NO.:-\nCLASS:-\n\n_________________________________________________________________\n");
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	        finally
+	        {
+	            //close resources
+	            try {
+	                fr.close();
+	            }
+	            catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    log.log(Level.INFO,"First Run Successfull ");
+	}
+	public static void writeonfile(String data)
+	{
+		LogManager logmgr = LogManager.getLogManager();
+		Logger log= logmgr.getLogger(Logger.GLOBAL_LOGGER_NAME);
+		log.log(Level.INFO,"QPGen:FixQno"); 
+		if(timecalled==0)
+		{
+			firsttimerun();
+		}
+		File file = new File("TestPaper.txt");
+		 FileWriter fr = null;
+	        try {
+	            fr = new FileWriter(file,true);
+	            fr.write(data);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	        finally
+	        {
+	            //close resources
+	            try {
+	                fr.close();
+	            }
+	            catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    log.log(Level.INFO,"Filestream successful");
+	 }
+    public static int[] fixQno()
 	{
 		LogManager logmgr = LogManager.getLogManager();
 		Logger log= logmgr.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -91,23 +153,7 @@ public class qpgen {
 				       {
 					int flag=0;
 				 	 qtopic=a.getString("qtopic");
-				 	/*for(int i=0;i<j;i++)
-				 	{
-				 			if(s2[i].equals(qtopic))
-				 			{
-				 				flag=1;
-				 				break;
-				 			}
-				 	
-				 	}
-				 	if(flag==0)
-				 	{
-				 	// s2[i]=new String;
-                                            //System.out.println(qtopic);
-				 		s2[j]=qtopic;
-				 		j++;
-				 	}*/
-                                        System.out.println(qtopic);
+                    System.out.println(qtopic);
 				       }
 					/*for(int i=0;i<j;i++)
 					{
@@ -134,7 +180,7 @@ public class qpgen {
                 		  i=i+1;
                 	  }
                    }
-                
+              
            
                 System.out.println("enter the number of questions");
                 n=scan.nextInt();
@@ -145,7 +191,7 @@ public class qpgen {
             			list.add(new Integer(k));
        				 }
         		Collections.shuffle(list);
-        		
+        		int []qno=new int[100];
              if(n<i)
              {
              }
@@ -155,7 +201,6 @@ public class qpgen {
              }
              if(n!=0)
              {
-                 
         		for(int k=0;k<n;k++)
               	{
                	 		qno[k]=arr[list.get(k)];
@@ -164,38 +209,35 @@ public class qpgen {
                        
                         for(int k=0;k<n;k++)
                                System.out.println(qno[k]);
-                       
+                        
+			
+			
              }          
-                
-		
+
            }	 
                 catch (Exception e)
                  {
                  System.err.println("Got an exception! ");
                  System.err.println(e.getMessage());
                 }
-                                
-               
-             
+		
+	return qno;
 	}
-         public static String Question_paper()
+	
+ public static void Question_paper()
 	{
-            
-		fixQno();
-                System.out.println("enter");
-                System.out.println(n);
-                for(int i=0;i<n;i++)
-                       System.out.println(qno[i]);
+		int ans[]= fixQno();
                 String s=new String();
-		for(int i=0;i<n;i++)
-	   {
+		
 		try {
 			Connection con = editmode.connect();
 			Statement printall=con.createStatement();
 			printall=con.createStatement();
-			
+			for(int i=0;i<n;i++)
+	   		{
 		
-		       String sql="SELECT * FROM QBANK WHERE qnos='"+qno[i]+"';";
+				 
+		 		String sql="SELECT * FROM QBANK WHERE QNOS='"+qno[i]+"';";
 			ResultSet r = printall.executeQuery(sql);
 			while ( r.next() ) {
 		     	   int no = r.getInt("qnos");
@@ -208,23 +250,23 @@ public class qpgen {
 		     	   int qhardness=r.getInt("qhardness");
 		     	   String qsubject=r.getString("qsubject");
 		     	   String qtopic=r.getString("qtopic");
-		           s+=i+1+".";
+		           s+="i+1"+"\n";
 		           s+= "QUESTION = " + desc +"\n" ;
 		           s+= "OPTION 1 = " + op1 +"\n";
 		            s+= "OPTION 2 = " + op2 +"\n";
 		            s+= "OPTION 3 = " + op3 +"\n";
 		            s+="OPTION 4 = " + op4 +"\n";
-			 
+		            writeonfile(s);
 		           
 		       }
 		}
-	    		
+	    }		
 	  catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-           } 
-	return s;
+		
+		return;
 	}
 	public static String Answer_paper()
 	{
@@ -253,12 +295,12 @@ public class qpgen {
 		     	   String qsubject=r.getString("qsubject");
 		     	   String qtopic=r.getString("qtopic");
 		           
-                           s+=i+1+".";
 		           s+= "QUESTION = " + desc +"\n";
 		           s+= "OPTION 1 = " + op1 +"\n";
 		            s+= "OPTION 2 = " + op2+"\n";
 		            s+= "OPTION 3 = " + op3+"\n";
 		            s+="OPTION 4 = " + op4+"\n";
+		           s+="CORRECT OPTION = "+ correctop+"\n";
 		       }
 		  }
 	     }	
@@ -270,4 +312,3 @@ public class qpgen {
 	}
 
 }
-
