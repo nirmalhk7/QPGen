@@ -4,6 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 import qpgen1.editmode;
+import qpgen1.qpgen;
 public class Index {
 //Main thing
 	public static void main(String[] args) 
@@ -47,6 +48,7 @@ public class Index {
 					break;
 				case 2:choicecheck=0;
 					log.log(Level.INFO,"QPGM");
+					qpgen.writeonfile("Hello World");
 					//qpgen.fixQno();
 					break;
 				default:choicecheck=1;

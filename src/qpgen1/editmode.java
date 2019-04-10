@@ -1,5 +1,5 @@
-package qpgen1;
 
+package qpgen1;
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -157,50 +157,37 @@ public class editmode {
 		LogManager logmgr = LogManager.getLogManager();
 		Logger log= logmgr.getLogger(Logger.GLOBAL_LOGGER_NAME);
 		log.log(Level.INFO,"Qadd Entered.");
-	      Scanner inp=new Scanner(System.in);
-		  Connection c = null;
+	      Scanner input=new Scanner(System.in);
+		  Connection c = connect();
 	      
 
 	      try {
 	         log.log(Level.FINER,"Opened database successfully");
 	         Statement stmt = c.createStatement();
 	         //Show list of Questions that come under that category
-	         ResultSet rs = stmt.executeQuery( "SELECT * FROM QNLIST WHERE qtopic="+topic+" AND qsubj="+Subj+";");
-	         while ( rs.next() )
-	         {
-		         int qnos = rs.getInt("qnos");
-		         String  qdesc = rs.getString("qdesc");
-		         String  qhardness = rs.getString("qhardness");
-		         String qtopic = rs.getString("qtopic");
-		         
-		         System.out.println( "QNOS = " + qnos );
-		         System.out.println( "QDESC = " + qdesc );
-		         System.out.println( "QHARDNESS="+ qhardness );
-		         System.out.println( "QTOPIC = " + qtopic );
-                         System.out.println("QSUBJECT ="+ Subj);
-	         }
-	          int qnos;
+	        ResultSet rs;
+	       log.log(Level.INFO,"Finding Query");
+	        printtable( "SELECT * FROM QBANK WHERE qtopic= '"+topic+"' AND qsubject= '"+Subj+"';",Subj,topic);
 	         System.out.println("Enter the Question Number which you wish to edit:");
-	         qnos=inp.nextInt();
-               
+	         int qnos=input.nextInt();
+               input.nextLine();
                 System.out.println("Enter the question ");
-            String a = input.nextLine();
+            String desc = input.nextLine();
             System.out.println("Enter Option 1 ");
-            String b = input.nextLine();
+            String op1 = input.nextLine();
             System.out.println("Enter Option 2 ");
-              String z = input.nextLine();
+              String op2 = input.nextLine();
                System.out.println("Enter Option 3 ");
-              String d = input.nextLine();
+              String op3 = input.nextLine();
                System.out.println("Enter Option 4 ");
-              String e = input.nextLine();
+              String op4 = input.nextLine();
                System.out.println("Enter  the  Correct Option ");
-              String f = input.nextLine();
+              String opA = input.nextLine();
                System.out.println("Enter the  Difficulty Rating ");
-             String g = input.nextLine();
+             int qhardness = input.nextInt();
              
           
-          /*this stmt is giving error can u plz chk it out*/
-          String sql="UPDATE QNLIST SET QDESC="+a+",OP1="+b+",OP2="+z+",OP3="d",OP4="+e+",CORRECTOP ="+f+",QHARDNESS ="+g+" WHERE qtopic="+topic+",qsubj="+Subj+";";
+          String sql="UPDATE QBANK SET qdesc= '"+desc+"',op1= '"+op1+"',op2= '"+op2+"',op3= '"+op3+"'op4= '"+op4+"',opA = '"+opA+"',qhardness= '"+qhardness+"' WHERE qtopic= '"+topic+"' AND qsubj= '"+Subj+"';";
 	         ((java.sql.Statement) stmt).executeUpdate(sql);
 	          rs=stmt.executeQuery(sql);
 	         
@@ -245,5 +232,3 @@ public class editmode {
 	      System.out.println("Operation done successfully");
 	}
 }
-
-
