@@ -1,8 +1,14 @@
-package qpgen1;
-import java.util.Scanner;
+package qpgen1;import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
+import qpgen1.editmode;
+import java.sql.Statement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import qpgen1.editmode;
 import qpgen1.qpgen;
 public class Index {
@@ -48,9 +54,13 @@ public class Index {
 					break;
 				case 2:choicecheck=0;
 					log.log(Level.INFO,"QPGM");
-					qpgen.writeonfile("Hello World");
-					//qpgen.fixQno();
-					break;
+					System.out.println("QUESTION PAPER");
+					String s1=qpgen.Question_paper();
+                                          System.out.println(s1);
+					System.out.println("ANSWER PAPER");				
+                                        String s2=qpgen.Answer_paper();
+                                            System.out.println(s2);
+	                                 break;
 				default:choicecheck=1;
 				System.out.println("Please enter numbers 1 or 2 only.");
 			}
