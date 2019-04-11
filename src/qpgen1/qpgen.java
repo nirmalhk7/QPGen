@@ -20,44 +20,47 @@ public class qpgen {
 	qpgen(){
 		timecalled=0;
 	}
-	public static void firsttimerun() {
+	public static void firsttimerun(String sbj) {
 		LogManager logmgr = LogManager.getLogManager();
 		Logger log= logmgr.getLogger(Logger.GLOBAL_LOGGER_NAME);
 		Scanner inp=new Scanner(System.in);
-		System.out.println("University Name?:");
+		System.out.println("Please Enter University Name:");
 		String data=inp.nextLine();
-		System.out.println("Subject Name?:");
-		String sbj=inp.nextLine();
-		System.out.println("Date of Examination:");
+		System.out.println("Please Enter Date of Examination:");
 		String date=inp.nextLine();
 		File file = new File("TestPaper.txt");
-		 FileWriter fr = null;
-	        try {
-	            fr = new FileWriter(file);
-	            fr.write(data+"\n"+sbj+"\n"+date+"\n\nNAME:-\nROLL NO.:-\nCLASS:-\n\n_________________________________________________________________\n");
-	        } catch (IOException e) {
-	            e.printStackTrace();
+		log.log(Level.INFO,"Test file created");
+		FileWriter fr = null;
+	    try 
+	    {
+		    fr = new FileWriter(file);
+		    fr.write(data+"\n"+sbj+"\n"+date+"\n\nNAME:-\nROLL NO.:-\nCLASS:-\n\n_________________________________________________________________\n");
+		}
+	    catch (IOException e)
+	    {
+	    	e.printStackTrace();
+	    }
+	    finally
+	    {
+	    	try 
+	    	{
+	    		fr.close();
 	        }
-	        finally
-	        {
-	            //close resources
-	            try {
-	                fr.close();
-	            }
-	            catch (IOException e) {
-	                e.printStackTrace();
-	            }
-	        }
+            catch (IOException e) 
+    		{
+                e.printStackTrace();
+            }
+	    }
 	    log.log(Level.INFO,"First Run Successfull ");
 	}
-	public static void writeonfile(String data)
+	public static void writeonfile(String data,String subject)
 	{
 		LogManager logmgr = LogManager.getLogManager();
 		Logger log= logmgr.getLogger(Logger.GLOBAL_LOGGER_NAME);
-		log.log(Level.INFO,"QPGen:FixQno"); 
+		log.log(Level.INFO,"Into Writeon FIle!!"); 
 		if(timecalled==0)
 		{
-			firsttimerun();
+			firsttimerun(subject);
 		}
 		File file = new File("TestPaper.txt");
 		 FileWriter fr = null;
@@ -71,7 +74,8 @@ public class qpgen {
 	        {
 	            //close resources
 	            try {
-	                fr.close();
+	                log.log(Level.INFO,"Error! during FIlestream");
+	            	fr.close();
 	            }
 	            catch (IOException e) {
 	                e.printStackTrace();
@@ -152,7 +156,7 @@ public class qpgen {
 				 	 qtopic=a.getString("qtopic");
                     System.out.println(qtopic);
 			    }
-				System.out.println("Enter topic of the test:-");
+				System.out.println("\nEnter topic of the test:-");
 				String topic=scan.next();
 				int arr[]=new int[100];
                             print=con.createStatement();
@@ -174,10 +178,8 @@ public class qpgen {
                }
           
        
-            System.out.println("enter the number of questions");
+            System.out.println("Enter the number of questions:-");
             n=scan.nextInt();
-            
-
              ArrayList<Integer> list = new ArrayList<Integer>();
    			 for (int k=0; k<i; k++) {
         			list.add(new Integer(k));
@@ -212,56 +214,6 @@ public class qpgen {
 		
 	return qno;
 	}
-	
- public static String Question_paper()
- {
-	 LogManager logmgr = LogManager.getLogManager();
-	 Logger log= logmgr.getLogger(Logger.GLOBAL_LOGGER_NAME);
-			
-	 int ans[]= fixQno();
-     String s=new String();
-     try
-	{
-			Connection con = editmode.connect();
-			Statement printall=con.createStatement();
-			printall=con.createStatement();
-			for(int i=0;i<n;i++)
-	   		{
-		 		String sql="SELECT * FROM QNBANK WHERE QNOS='"+qno[i]+"';";
-		 		ResultSet r = printall.executeQuery(sql);
-		 		while ( r.next() )
-		 		{
-		     	   int no = r.getInt("qnos");
-		     	   String  desc = r.getString("qdesc");
-		     	   String op1 = r.getString("op1");
-		     	   String op2 = r.getString("op2");
-		     	   String op3 = r.getString("op3");
-		     	   String op4 = r.getString("op4");
-		     	   String correctop = r.getString("opA");
-		     	   int qhardness=r.getInt("qhardness");
-		     	   String qsubject=r.getString("qsubject");
-		     	   String qtopic=r.getString("qtopic");
-		           s+="i+1"+"\n";
-		           s+= "QUESTION = " + desc +"\n" ;
-		           s+= "OPTION 1 = " + op1 +"\n";
-		            s+= "OPTION 2 = " + op2 +"\n";
-		            s+= "OPTION 3 = " + op3 +"\n";
-		            s+="OPTION 4 = " + op4 +"\n";
-		            log.log(Level.INFO,"Question String Created");
-		            writeonfile(s);
-		           
-		 		}
-	   		}
-		}		
-	catch (SQLException e1)
-	{
-		// TODO Auto-generated catch block
-		log.log(Level.INFO,"Error!");
-		e1.printStackTrace();
-	}
-	
-	return s;
-}
 public static String Answer_paper()
 {
 		
@@ -299,10 +251,52 @@ public static String Answer_paper()
    		}
     }	
 	 catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	return s;
 	}
+public static void Question_paper() {
+	 LogManager logmgr = LogManager.getLogManager();
+	 Logger log= logmgr.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	 log.log(Level.INFO,"Question_paper entered!");
+	 int ans[]= fixQno();
+     log.log(Level.INFO,"Question Paper Again!");
+	 String s=new String();
+     try
+	{
+			Connection con = editmode.connect();
+			Statement printall=con.createStatement();
+			printall=con.createStatement();
+			for(int i=0;i<n;i++)
+	   		{
+		 		String sql="SELECT * FROM QNBANK WHERE QNOS='"+qno[i]+"';";
+		 		ResultSet r = printall.executeQuery(sql);
+		 		while ( r.next() )
+		 		{
+		     	   int no = r.getInt("qnos");
+		     	   String  desc = r.getString("qdesc");
+		     	   String op1 = r.getString("op1");
+		     	   String op2 = r.getString("op2");
+		     	   String op3 = r.getString("op3");
+		     	   String op4 = r.getString("op4");
+		     	   String subj=r.getString("qsubject");
+		     	   s+="i+1"+"\n";
+		           s+= "QUESTION = " + desc +"\n" ;
+		           s+= "OPTION 1 = " + op1 +"\n";
+		            s+= "OPTION 2 = " + op2 +"\n";
+		            s+= "OPTION 3 = " + op3 +"\n";
+		            s+="OPTION 4 = " + op4 +"\n";
+		            log.log(Level.INFO,"Question String Created");
+		            writeonfile(s,subj);
+		           
+		 		}
+	   		}
+		}		
+	catch (SQLException e1)
+	{
+		log.log(Level.INFO,"Error!");
+		e1.printStackTrace();
+	}
+}
 
 }
