@@ -14,7 +14,8 @@ We used Java and MySQLLite to make the program. This is a Console Java Program.
 MIT License. We welcome collabs and feedback.
 
 ### Makers
-[Amith Bhat]{https://github.com/amithbhat1}
-[Asis Rout]{https://github.com/AsisRout}
-[Jeeukrishnan Kayshyap]{}
-[Nirmal Khedkar]{www.github.com/nirmalhk7} 
+[Amith Bhat](https://github.com/amithbhat1)
+[Asis Rout](https://github.com/AsisRout)
+[Jeeukrishnan Kayshyap]
+
+[Nirmal Khedkar](www.github.com/nirmalhk7)
