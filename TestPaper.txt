@@ -1,0 +1,34 @@
+NITK
+11 Apr
+java OOp
+
+NAME:-
+ROLL NO.:-
+CLASS:-
+
+_______________________________________________________________
+null1.QUESTION = Java Q1
+OPTION 1 = O1
+OPTION 2 = O2
+OPTION 3 = O3
+OPTION 4 = O4
+2.QUESTION = QQ1
+OPTION 1 = a
+OPTION 2 = 
+OPTION 3 = c
+OPTION 4 = d
+3.QUESTION = What?
+OPTION 1 = Hi
+OPTION 2 = hello
+OPTION 3 = heya
+OPTION 4 = hmm
+4.QUESTION = JJQ1
+OPTION 1 = O1
+OPTION 2 = O2
+OPTION 3 = O3
+OPTION 4 = O4
+5.QUESTION = Q
+OPTION 1 = a
+OPTION 2 = b
+OPTION 3 = c
+OPTION 4 = d

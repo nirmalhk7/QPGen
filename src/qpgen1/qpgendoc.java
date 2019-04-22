@@ -13,7 +13,7 @@ import java.io.*;
 import java.util.*; 
 
 import qpgen1.Add1;
-public class qpgendoc {
+public class qpgen {
         public static int n; 
         public static int ans[]=new int[100];
         public static int qno[]=new int[100];
@@ -178,7 +178,54 @@ public class qpgendoc {
                
              
 	}
-    
+         public static String Question_paper()
+	{
+            
+		fixQno();
+                System.out.println("enter");
+                System.out.println(n);
+                for(int i=0;i<n;i++)
+                       System.out.println(qno[i]);
+                String s=new String();
+		for(int i=0;i<n;i++)
+	   {
+		try {
+			Connection con = editmode.connect();
+			Statement printall=con.createStatement();
+			printall=con.createStatement();
+			
+		
+		       String sql="SELECT * FROM QBANK WHERE qnos='"+qno[i]+"';";
+			ResultSet r = printall.executeQuery(sql);
+			while ( r.next() ) {
+		     	   int no = r.getInt("qnos");
+		     	   String  desc = r.getString("qdesc");
+		     	   String op1 = r.getString("op1");
+		     	   String op2 = r.getString("op2");
+		     	   String op3 = r.getString("op3");
+		     	   String op4 = r.getString("op4");
+		     	   String correctop = r.getString("opA");
+		     	   int qhardness=r.getInt("qhardness");
+		     	   String qsubject=r.getString("qsubject");
+		     	   String qtopic=r.getString("qtopic");
+		           s+=i+1+".";
+		           s+= "QUESTION = " + desc +"\n" ;
+		           s+= "OPTION 1 = " + op1 +"\n";
+		            s+= "OPTION 2 = " + op2 +"\n";
+		            s+= "OPTION 3 = " + op3 +"\n";
+		            s+="OPTION 4 = " + op4 +"\n";
+			 
+		           
+		       }
+		}
+	    		
+	  catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+           } 
+	return s;
+	}
 	public static String Answer_paper()
 	{
 		
@@ -221,52 +268,6 @@ public class qpgendoc {
 			e1.printStackTrace();
 		}
 	return s;
-	}
-	public static void Question_paper(String qsubj)
-	{
-		fixQno();
-        System.out.println("enter");
-        System.out.println(n);
-        for(int i=0;i<n;i++)
-               System.out.println(qno[i]);
-        String s=new String();
-for(int i=0;i<n;i++)
-{
-try {
-	Connection con = editmode.connect();
-	Statement printall=con.createStatement();
-	printall=con.createStatement();
-	
-
-       String sql="SELECT * FROM QBANK WHERE qnos='"+qno[i]+"';";
-	ResultSet r = printall.executeQuery(sql);
-	while ( r.next() ) {
-     	   int no = r.getInt("qnos");
-     	   String  desc = r.getString("qdesc");
-     	   String op1 = r.getString("op1");
-     	   String op2 = r.getString("op2");
-     	   String op3 = r.getString("op3");
-     	   String op4 = r.getString("op4");
-     	   String correctop = r.getString("opA");
-     	   int qhardness=r.getInt("qhardness");
-     	   String qsubject=r.getString("qsubject");
-     	   String qtopic=r.getString("qtopic");
-           s+=i+1+".";
-           s+= "QUESTION = " + desc +"\n" ;
-           s+= "OPTION 1 = " + op1 +"\n";
-            s+= "OPTION 2 = " + op2 +"\n";
-            s+= "OPTION 3 = " + op3 +"\n";
-            s+="OPTION 4 = " + op4 +"\n";
-	 
-           
-       }
-}
-		
-catch (SQLException e1) {
-	// TODO Auto-generated catch block
-	e1.printStackTrace();
-}
-   } 
 	}
 
 }

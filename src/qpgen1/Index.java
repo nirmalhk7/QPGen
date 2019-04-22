@@ -30,7 +30,7 @@ public class Index {
 				switch(choice)
 				{
 					case 1:choicecheck=0;
-						log.log(Level.INFO,"Edit Mode entered.");
+						log.log(Level.FINE,"Edit Mode entered.");
 						System.out.println("What subject does the question belong which you want to add/delete/edit?");
 						String qsubj=inp.next();
 						System.out.println("What topic does the question belong which you want to add/delete/edit?");
@@ -54,9 +54,9 @@ public class Index {
 						}
 						break;
 					case 2:choicecheck=0;
-						log.log(Level.INFO,"QPGM");
-						System.out.println("Following Questions are being printed in QuestionBank.db:-");
-						qpgen.Question_paper();
+						log.log(Level.FINE,"QPGM");
+						System.out.println("You wish to generate a Question Paper.");
+						String s1=qpgen.Question_paper();
 	                    System.out.println("ANSWER PAPER");				
 	                    String s2=qpgen.Answer_paper();
 	                    System.out.println(s2);

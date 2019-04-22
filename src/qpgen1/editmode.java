@@ -59,7 +59,7 @@ public class editmode {
 	     try {
 	        Class.forName("org.sqlite.JDBC");
 	        c = DriverManager.getConnection("jdbc:sqlite:QuestionBank.db"); //Connecting to the Question Bank database, or creating it if not exists 
-	        log.log(Level.INFO,"Opened database successfully at p1");
+	        log.log(Level.FINE,"Opened database successfully at p1");
 	     }   
 	     catch(Exception e)
 	     {
@@ -78,7 +78,7 @@ public class editmode {
 		Connection connector = connect();
 		try
 		{
-			l.log(Level.INFO,"Checking if Table Exists or Not");
+			l.log(Level.FINE,"Checking if Table Exists or Not");
 			Statement stmt = (Statement) connector.createStatement();
 	        String tablecreate = "CREATE TABLE IF NOT EXISTS QNBANK " +
 	                       "(qnos INTEGER PRIMARY KEY NOT NULL," +
@@ -93,27 +93,24 @@ public class editmode {
 	                       " qtopic TEXT NOT NULL )";
 	                       
 	        ((java.sql.Statement) stmt).executeUpdate(tablecreate);
-	        l.log(Level.INFO,"Table Checked.");
+	        l.log(Level.FINE,"Table Checked.");
 			
 	        stmt.close();
 	        connector.close();
 		}
 		catch(Exception e)
         {
-            l.log(Level.INFO,"Was not able to Create the Table!!");
+            l.log(Level.FINE,"Was not able to Create the Table!!");
 			System.out.println("Sorry!!- Something went wrong " + e.getMessage());
             System.exit(0);
         }
 	    String sql = "INSERT INTO QNBANK(qdesc , op1, op2, op3,op4,opA, qhardness, qsubject,qtopic) VALUES(?,?,?,?,?,?,?,?,?)"; 
-        l.log(Level.INFO,"Getting into Insert Try! ");
+        l.log(Level.FINE,"Getting into Insert Try! ");
 	    try 
         {
 	    	Scanner i= new Scanner(System.in);
 	    	Connection conn = connect();
             PreparedStatement pstmt = conn.prepareStatement(sql); 
-           /* System.out.println("Enter the Question Number"); 
-            int qn = i.nextInt();
-             pstmt.setInt(1, qn);*/
             System.out.println("Enter the Question"); 
              String qdesc = input.nextLine();
               pstmt.setString(1, qdesc);
@@ -159,14 +156,14 @@ public class editmode {
 	{
 		LogManager logmgr = LogManager.getLogManager();
 		Logger l= logmgr.getLogger(Logger.GLOBAL_LOGGER_NAME);
-		l.log(Level.INFO,"QEdit Entered.");
+		l.log(Level.FINE,"QEdit Entered.");
 	
 	
 	     try {
                 Scanner inp=new Scanner(System.in);
 	    	  Connection conn = connect();
 	          conn.setAutoCommit(false);
-	           l.log(Level.INFO,"QEdit Try Entered.");
+	           l.log(Level.FINE,"QEdit Try Entered.");
 	         //Show list of Questions that come under that category
 	          String printall="SELECT * FROM QNBANK WHERE qtopic= '"+topic+"' AND qsubject= '"+Subj+"';";
 	          printtable(printall,Subj,topic);
@@ -246,11 +243,11 @@ public class editmode {
 	      Scanner inp=new Scanner(System.in);
 	      LogManager logmgr = LogManager.getLogManager();
 		  Logger log= logmgr.getLogger(Logger.GLOBAL_LOGGER_NAME);
-		  log.log(Level.INFO,"Entered QDELETE");
+		  log.log(Level.FINE,"Entered QDELETE");
 	      try {
 	    	  Connection conn = connect();
 	          conn.setAutoCommit(false);
-	    	  log.log(Level.INFO,"Opened database successfully for QDELETE");
+	    	  log.log(Level.FINE,"Opened database successfully for QDELETE");
 	         //Show list of Questions that come under that category
 	          String printall="SELECT * FROM QNBANK WHERE qtopic= '"+qtopic+"' AND qsubject= '"+qsubject+"';";
 	          printtable(printall,qsubject,qtopic);
